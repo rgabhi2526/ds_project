@@ -21,6 +21,7 @@ class ULL{
         }
         void insert(int);
         void display();
+        void search(int);
 };
 
 
@@ -48,7 +49,9 @@ int main(){
                 
                 break;
             case 3:
-                
+                printf("enter the number to search :");
+                scanf("%d",&num);
+                L1.search(num);
                 break;
             case 4:
                 L1.display();
@@ -115,11 +118,23 @@ void ULL::display(){
     }
 }
 
-
-
-
-
-
-
-
-
+// This member method is to search for a number in the ULL
+void ULL::search(int num){
+    int count;
+    struct node* temp = head;
+    while(temp != NULL){
+        // For Displaying the Array inside the Node
+        for(int i=0; i<=temp->noe; i++){
+           if( num==temp->arr[i]){
+               printf("\n Number found !!");
+               count++;
+               
+           }
+        }
+        printf("\n");
+        temp = temp->next;
+    }
+    if(count!=1){
+        printf("\nNumber wasn't found !!");
+    }
+}
