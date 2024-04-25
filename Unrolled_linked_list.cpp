@@ -104,12 +104,12 @@ void ULL::insert(int num){
 }
 
 
-// Method for Displaying in Unrolled Linked List
+// Method for Displaying the Unrolled Linked List
 void ULL::display(){
     struct node* temp = head;
-    // For Displaying the nodes
+    // For Traversing through the nodes
     while(temp != NULL){
-        // For Displaying the Array inside the Node
+        // For Traversing inside the Array in the Node
         for(int i=0; i<=temp->noe; i++){
             printf("%d\t",temp->arr[i]);
         }
@@ -118,12 +118,14 @@ void ULL::display(){
     }
 }
 
-// This member method is to search for a number in the ULL
+
+// Method to Search for a Number in Unrolled Linked List
 void ULL::search(int num){
     int count;
     struct node* temp = head;
+    // For Traversing through the nodes
     while(temp != NULL){
-        // For Displaying the Array inside the Node
+        // For Traversing inside the Array in the Node
         for(int i=0; i<=temp->noe; i++){
            if( num==temp->arr[i]){
                printf("\n Number found !!");
