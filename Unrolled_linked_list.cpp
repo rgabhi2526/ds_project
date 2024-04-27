@@ -30,10 +30,10 @@ int main(){
     int choice;
     int num;
     while(1){
-        printf("\nEnter any key to proceed.\n");
-        getchar();
-        getchar();
-        system("clear");
+        // printf("\nEnter any key to proceed.\n");
+        // getchar();
+        // getchar();
+        // system("clear");
         printf("\nEnter \n1. Insert\n2. Delete\n3. Search");
         printf("\n4. Display\n5. Exit");
         printf("\n Enter a choice:");
@@ -128,15 +128,15 @@ void ULL::search(int num){
         // For Traversing inside the Array in the Node
         for(int i=0; i<=temp->noe; i++){
            if( num==temp->arr[i]){
-               printf("\n Number found !!");
                count++;
-               
            }
         }
-        printf("\n");
         temp = temp->next;
     }
-    if(count!=1){
+    if(count==0){
         printf("\nNumber wasn't found !!");
+    }
+    else{
+        printf("\n Number found !!");
     }
 }
