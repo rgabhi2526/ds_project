@@ -22,6 +22,7 @@ class ULL{
         void insert(int);
         void display();
         void search(int);
+        void deleteelement(int);
 };
 
 
@@ -30,10 +31,10 @@ int main(){
     int choice;
     int num;
     while(1){
-        // printf("\nEnter any key to proceed.\n");
-        // getchar();
-        // getchar();
-        // system("clear");
+        printf("\nEnter any key to proceed.\n");
+        getchar();
+        getchar();
+        system("clear");
         printf("\nEnter \n1. Insert\n2. Delete\n3. Search");
         printf("\n4. Display\n5. Exit");
         printf("\n Enter a choice:");
@@ -46,7 +47,9 @@ int main(){
                 printf("Insertion Successful");
                 break;
             case 2:
-                
+                printf("Enter the number to get deleted:");
+                scanf("%d",&num);
+                L1.deleteelement(num);
                 break;
             case 3:
                 printf("enter the number to search :");
@@ -140,3 +143,55 @@ void ULL::search(int num){
         printf("\n Number found !!");
     }
 }
+
+
+
+// Method for Deleting from Unrolled Linked List
+void ULL::deleteelement(int num){
+    if(head == NULL){
+        printf("List is empty,So Cannot delete.\n");
+        return;
+    }
+    struct node* temp = head;
+    while(temp != NULL){
+        int i;
+        for(i = 0; i <= temp->noe; i++){
+            if(temp->arr[i] == num){
+                break;
+            }
+        }
+        if(i <= temp->noe){
+            for(int j = i; j < temp->noe; j++){
+                temp->arr[j] = temp->arr[j + 1];
+            }
+
+            temp->noe--;
+
+            if(temp->noe == -1){
+                if(temp == head){
+                    head = temp->next;
+                    delete temp;
+                    temp = head;
+                }
+                else{
+                    struct node* prev = head;
+                    while(prev->next != temp){
+                        prev = prev->next;
+                    }
+                    prev->next = temp->next;
+                    delete temp;
+                    temp = prev->next;
+                }
+            }
+            printf("###Deletion successful###.\n");
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("Number is not in the list,check again.\n");
+}
+
+
+
+
+
