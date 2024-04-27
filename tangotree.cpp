@@ -247,7 +247,74 @@ public:
         node = balance(node);
         return node;
     }
+
+
+
+    void callins(int num){
+        root = insertNode(root, num);
+    }
+
+    void display(struct Node* root){
+        if(root == NULL){
+            return;
+        }
+        else{
+            display(root->left);
+            printf("%d||",root->data);
+            display(root->right);
+        }
+    }
+
+    void calldisp(){
+        display(root);
+    }
+  
 };
+
+
+
+int main(){
+    TangoTree t1;
+    int choice, num;
+    while(1){
+        printf("\nEnter any key to proceed.\n");
+        getchar();
+        getchar();
+        system("clear");
+        printf("Enter \n1. Insert \n2. Delete\n3. Display");
+        printf("\n4. Search\n5. Exit");
+        printf("\n Enter a choice:");
+        scanf("%d", &choice);
+        switch (choice){
+            case 1:
+                printf("Enter the number to be inserted: ");
+                scanf("%d", &num);
+                t1.callins(num);
+                printf("Insertion Successful");
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                t1.calldisp();
+                printf("\n");
+                break;
+            case 4:
+                
+                break;
+            case 5:
+                exit(0);
+                break;
+            default:
+                printf("Enter the Valid Choice !\n");
+                break;
+        }
+    }
+}
+
+
+
+
 
 
 
