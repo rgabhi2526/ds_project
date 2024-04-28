@@ -34,22 +34,22 @@ class TangoTree
         return node->data;
     }
 
-    Node *insert(Node *root, Node *child)
+    Node *insert(Node *head, Node *child)
     {
-        if(root == NULL)
+        if(head == NULL)
         {
             return child;
         }
-        if(child->data > root->data)
+        if(child->data > head->data)
         {
-            root->right = insert(root->right, child);
+            head->right = insert(head->right, child);
         }
         else
         {
-            root->left = insert(root->left, child);
+            head->left = insert(head->left, child);
         }
-        updateHeight(root);
-        return root;
+        updateHeight(head);
+        return head;
     }
 
 public:
@@ -83,6 +83,7 @@ public:
 
     Node *rightRotate(Node *y)
     {
+        printf("r");
         Node *head = y->left;
         Node *c_1 = head->right;
         Node *c_2 = head->left;
@@ -146,6 +147,7 @@ public:
 
     Node *leftRotate(Node *x)
     {
+        printf("l");
         Node *head = x->right;
         Node *c_1 = head->left;
         Node *c_2 = head->right;
@@ -213,8 +215,7 @@ public:
             return head;
         else
         {
-            balance(head->left);
-            balance(head->right);
+            
             int balanceFactor = getHeight(head->left) - getHeight(head->right);
             if (balanceFactor > 1) 
             {
@@ -311,10 +312,3 @@ int main(){
         }
     }
 }
-
-
-
-
-
-
-
