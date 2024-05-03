@@ -300,10 +300,10 @@ int main(){
     TangoTree t1;
     int choice, num;
     while(1){
-        // printf("\nEnter any key to proceed.\n");
-        // getchar();
-        // getchar();
-        // system("clear");
+        printf("\nEnter any key to proceed.\n");
+        getchar();
+        getchar();
+        system("clear");
         printf("Enter \n1. Insert \n2. Delete\n3. Display");
         printf("\n4. Search\n5. Exit");
         printf("\n Enter a choice:");
