@@ -34,22 +34,23 @@ class TangoTree
         return node->data;
     }
 
-    Node *insert(Node *head, Node *child)
+    Node *insert(Node *temp, Node *child)
     {
-        if(head == NULL)
+        if(temp == NULL)
         {
             return child;
         }
-        if(child->data > head->data)
+        if(child->data > temp->data)
         {
-            head->right = insert(head->right, child);
+            temp->right = insert(temp->right, child);
         }
         else
         {
-            head->left = insert(head->left, child);
+            temp->left = insert(temp->left, child);
         }
-        updateHeight(head);
-        return head;
+        updateHeight(temp);
+        temp=balance(temp);
+        return temp;
     }
 
 public:
@@ -71,13 +72,13 @@ public:
 
     void updateHeight(Node* node) 
     {
-        if(getHeight(node->left) >getHeight(node->right))
+        if(getHeight(node->left) > getHeight(node->right))
         {
-         node->height = 1 + getHeight(node->left);
+            node->height = 1 + getHeight(node->left);
         }
-        else if(getHeight(node->left) <getHeight(node->right))
+        else if(getHeight(node->left) < getHeight(node->right))
         {
-         node->height = 1 + getHeight(node->right);  
+            node->height = 1 + getHeight(node->right);  
         }
     }
 
@@ -88,8 +89,9 @@ public:
         Node *c_1 = head->right;
         Node *c_2 = head->left;
         y->left = NULL;
+        y->height=getHeight(y->right)+1;
         head->left = head->right = NULL;
-
+        head->height=1;
         if(getHeight(c_1) > getHeight(c_2))
         {
             head = insert(head, c_1);
@@ -152,7 +154,9 @@ public:
         Node *c_1 = head->left;
         Node *c_2 = head->right;
         x->right = NULL;
+        x->height=getHeight(x->left)+1;
         head->left = head->right = NULL;
+        head->height=1;
 
         if(getHeight(c_1) > getHeight(c_2))
         {
@@ -190,7 +194,7 @@ public:
         else
         {
             head = insert(head, c_2);
-            if(c_1 == NULL)
+            if(c_1 == NULL)//balance function needs to be introduced
                 head = insert(head, x);
             else
             {
@@ -204,6 +208,7 @@ public:
                     head = insert(head, x); 
                     head = insert(head, c_1);
                 }
+
             }
         }
         return head;
@@ -215,7 +220,6 @@ public:
             return head;
         else
         {
-            
             int balanceFactor = getHeight(head->left) - getHeight(head->right);
             if (balanceFactor > 1) 
             {
@@ -227,6 +231,16 @@ public:
             }
         }
         return head;
+    }
+
+    Node* minValueNode(Node* node)
+    {
+        Node* current = node;
+        while (current && current->left != NULL)
+        {
+            current = current->left;
+        }
+        return current;
     }
 
     Node* insertNode(Node* node, int data) 
@@ -249,57 +263,148 @@ public:
         return node;
     }
 
-
-
-    void callins(int num){
+    void callins(int num)
+    {
         root = insertNode(root, num);
     }
 
-    void display(struct Node* root){
-        if(root == NULL){
+    void display(struct Node* root)
+    {
+        if(root == NULL)
+        {
             return;
         }
-        else{
+        else
+        {
             display(root->left);
             printf("%d||",root->data);
             display(root->right);
         }
     }
 
-    void calldisp(){
+    void calldisp()
+    {
         display(root);
+        printf("\n");
     }
-    
-    
-    int callsearch(int num){
+
+    int callsearch(int num)
+    {
         return search(root, num);
     }
-    
-    
-    int search(struct Node* root, int key){
-        if(root == NULL){
+
+    int search(struct Node* root, int key)
+    {
+        if(root == NULL)
+        {
             return 0;
         }
-        else if( root->data = key){
+        else if( root->data == key)
+        {
             return 1;
         }
         else if( key < root->data)
             return search(root->left, key);
-        else{
+        else
+        {
             return search(root->right, key);
         }
     }
-    
-    
-    
+
+    Node* deleteNode(Node* root, int data) 
+    {
+        if (root == NULL)
+        {
+            return root;
+        }
+
+        if (data < root->data)
+        {
+            root->left = deleteNode(root->left, data);
+        }
+        else if(data > root->data)
+        {
+            root->right = deleteNode(root->right, data);
+        }
+        else 
+        {
+            if( (root->left == NULL) || (root->right == NULL) ) 
+            {
+                Node* temp = root->left ? root->left : root->right;
+
+                if(temp == NULL) 
+                {
+                    temp = root;
+                    root = NULL;
+                }
+                else
+                {
+                    *root = *temp;
+                }
+
+                free(temp);
+            }
+            else 
+            {
+                Node* temp = minValueNode(root->right);
+                root->data = temp->data;
+                root->right = deleteNode(root->right, temp->data);
+            }
+        }
+
+        if (root == NULL)
+        {
+            return root;
+        }
+
+        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+
+        int balanceFactor = getHeight(root->left) - getHeight(root->right);
+
+        if (balanceFactor > 1 && getHeight(root->left->left) >= getHeight(root->left->right))
+        {
+            return rightRotate(root);
+        }
+
+        if (balanceFactor > 1 && getHeight(root->left->right) > getHeight(root->left->left)) 
+        {
+            root->left =  leftRotate(root->left);
+            return rightRotate(root);
+        }
+
+        if (balanceFactor < -1 && getHeight(root->right->right) >= getHeight(root->right->left))
+        {
+            return leftRotate(root);
+        }
+
+        if (balanceFactor < -1 && getHeight(root->right->left) > getHeight(root->right->right)) 
+        {
+            root->right = rightRotate(root->right);
+            return leftRotate(root);
+        }
+
+        return root;
+    }
+
+    int calldel(int num)
+    {
+        root = deleteNode(root, num);
+        if (root == NULL)
+        {
+            return 0; 
+        }
+        return 1; 
+    } 
 };
 
 
 
-int main(){
+int main()
+{
     TangoTree t1;
     int choice, num;
-    while(1){
+    while(1)
+    {
         printf("\nEnter any key to proceed.\n");
         getchar();
         getchar();
@@ -308,7 +413,8 @@ int main(){
         printf("\n4. Search\n5. Exit");
         printf("\n Enter a choice:");
         scanf("%d", &choice);
-        switch (choice){
+        switch (choice)
+        {
             case 1:
                 printf("Enter the number to be inserted: ");
                 scanf("%d", &num);
@@ -316,11 +422,19 @@ int main(){
                 printf("Insertion Successful");
                 break;
             case 2:
-                
+                printf("Enter the number to be deleted: ");
+                scanf("%d",&num);
+                if(t1.calldel(num))
+                {
+                    printf("Deletion successful");
+                }
+                else
+                {
+                    printf("Deletion failed");
+                }
                 break;
             case 3:
                 t1.calldisp();
-                printf("\n");
                 break;
             case 4:
                 printf("Enter the number to be searched for: ");
