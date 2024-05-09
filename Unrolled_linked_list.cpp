@@ -6,12 +6,9 @@
 class ULL{
     private:
         struct node{
-            int noe;//number of elements 
+            int noe=-1;//number of elements 
             int arr[SIZE];
             struct node* next;
-            node(){
-                noe = -1;
-            }
         };
     public:
         node* head;
