@@ -1,4 +1,3 @@
-// Program to implement Unrolled Linked List
 #include <stdio.h>
 #include <stdlib.h>
 #define SIZE 5
@@ -39,7 +38,11 @@ int main(){
         switch (choice){
             case 1:
                 printf("Enter the number to be inserted: ");
-                scanf("%d", &num);
+            
+                while (scanf("%d", &num) != 1) {
+                    printf("Invalid input. Please enter an integer: ");
+                    while (getchar() != '\n'); 
+                }
                 L1.insert(num);
                 printf("Insertion Successful");
                 break;
@@ -108,6 +111,9 @@ void ULL::insert(int num){
 void ULL::display(){
     struct node* temp = head;
     // For Traversing through the nodes
+    if(temp==NULL){
+        printf("\nNothing to display||List is Empty");
+    }
     while(temp != NULL){
         // For Traversing inside the Array in the Node
         for(int i=0; i<=temp->noe; i++){
@@ -121,25 +127,31 @@ void ULL::display(){
 
 // Method to Search for a Number in Unrolled Linked List
 void ULL::search(int num){
-    int count;
+    int count = 0;
     struct node* temp = head;
-    // For Traversing through the nodes
+
+    // Check if the list is empty
+    if (temp == NULL){
+        printf("List is Empty!! Nothing to search.\n");
+        return;
+    }
+
+    // Traverse through the nodes
     while(temp != NULL){
-        // For Traversing inside the Array in the Node
-        for(int i=0; i<=temp->noe; i++){
-           if( num==temp->arr[i]){
-               count++;
-           }
+        // Traverse inside the Array in the Node
+        for(int i = 0; i <= temp->noe; i++){
+            if(num == temp->arr[i]){
+                printf("\nNumber found !!");
+                return;  // Exit function early since number is found
+            }
         }
         temp = temp->next;
     }
-    if(count==0){
-        printf("\nNumber wasn't found !!");
-    }
-    else{
-        printf("\n Number found !!");
-    }
+
+    // If reached here, number was not found
+    printf("\nNumber wasn't found !!");
 }
+
 
 
 
@@ -187,8 +199,3 @@ void ULL::deleteelement(int num){
     }
     printf("Number is not in the list,check again.\n");
 }
-
-
-
-
-
