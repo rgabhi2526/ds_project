@@ -18,7 +18,7 @@ class ULL{
         void insert(int);
         void display();
         void search(int);
-        void deleteelement(int);
+        void deleteelement(int,int);
 };
 
 
@@ -26,6 +26,8 @@ int main(){
     ULL L1;
     int choice;
     int num;
+    int nodee;
+    int pos;
     while(1){
         printf("\nEnter any key to proceed.\n");
         getchar();
@@ -47,9 +49,12 @@ int main(){
                 printf("Insertion Successful");
                 break;
             case 2:
-                printf("Enter the number to get deleted:");
-                scanf("%d",&num);
-                L1.deleteelement(num);
+                printf("Enter the node of the element you want to delete:");
+                scanf("%d",&nodee);
+                printf("Enter the position of the element to delete:");
+                scanf("%d",&pos);
+                pos-=1;
+                L1.deleteelement(nodee,pos);
                 break;
             case 3:
                 printf("enter the number to search :");
@@ -156,46 +161,43 @@ void ULL::search(int num){
 
 
 // Method for Deleting from Unrolled Linked List
-void ULL::deleteelement(int num){
-    if(head == NULL){
-        printf("List is empty,So Cannot delete.\n");
+void ULL::deleteelement(int nodee,int pos){
+     struct node* temp = head;
+    while (temp != NULL&&nodee!=1) {
+        temp = temp->next;
+        nodee-=1;
+    }
+
+    if (temp == NULL) {
+        printf("Invalid node position.\n");
         return;
     }
-    struct node* temp = head;
-    while(temp != NULL){
-        int i;
-        for(i = 0; i <= temp->noe; i++){
-            if(temp->arr[i] == num){
-                break;
-            }
-        }
-        if(i <= temp->noe){
-            for(int j = i; j < temp->noe; j++){
-                temp->arr[j] = temp->arr[j + 1];
-            }
 
-            temp->noe--;
-
-            if(temp->noe == -1){
-                if(temp == head){
-                    head = temp->next;
-                    delete temp;
-                    temp = head;
-                }
-                else{
-                    struct node* prev = head;
-                    while(prev->next != temp){
-                        prev = prev->next;
-                    }
-                    prev->next = temp->next;
-                    delete temp;
-                    temp = prev->next;
-                }
-            }
-            printf("###Deletion successful###.\n");
-            return;
-        }
-        temp = temp->next;
+    if (pos < 0 || pos > temp->noe) {
+        printf("Invalid element position.\n");
+        return;
     }
-    printf("Number is not in the list,check again.\n");
+
+    for (int i = pos; i < temp->noe; i++) {
+        temp->arr[i] = temp->arr[i + 1];
+    }
+
+    temp->noe--;
+
+    if (temp->noe == -1) {
+        // If node is empty after deletion
+        if (temp == head) {
+            head = temp->next;
+            delete temp;
+        }
+        else {
+            struct node* prev = head;
+            while (prev->next != temp) {
+                prev = prev->next;
+            }
+            prev->next = temp->next;
+            delete temp;
+        }
+    }
+    printf("### Deletion successful ###\n");
 }
